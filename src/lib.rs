@@ -4,9 +4,11 @@
 
 pub mod cli;
 pub mod error;
+pub mod append;
 mod line_filter;
 pub mod max_len;
 pub mod min_len;
+pub mod prepend;
 
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, BufWriter};
@@ -31,6 +33,16 @@ pub fn run(cli: Cli) -> Result<()> {
             let input = open_input(file.as_deref())?;
             let output = BufWriter::new(io::stdout().lock());
             max_len::filter(input, output, max_len)
+        }
+        Command::Prepend { prefix, file } => {
+            let input = open_input(file.as_deref())?;
+            let output = BufWriter::new(io::stdout().lock());
+            prepend::filter(input, output, prefix.as_bytes())
+        }
+        Command::Append { suffix, file } => {
+            let input = open_input(file.as_deref())?;
+            let output = BufWriter::new(io::stdout().lock());
+            append::filter(input, output, suffix.as_bytes())
         }
     }
 }

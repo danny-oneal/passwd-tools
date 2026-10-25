@@ -29,3 +29,5 @@ Each feature file starts with an H1 and one paragraph of user-visible behavior, 
 
 - [Minimum length filter](./min-len.md) covers `min-len N [FILE]`: threshold, characters vs bytes, newline handling, stdin, errors.
 - [Maximum length filter](./max-len.md) covers `max-len N [FILE]`: the same behaviors with an upper bound.
+- [Prepend transform](./prepend.md) covers `prepend PREFIX [FILE]`: a prefix at the start of every line, verbatim content, newline handling, stdin, errors.
+- [Append transform](./append.md) covers `append SUFFIX [FILE]`: a suffix at the end of every line, before the terminator, with the same behaviors.

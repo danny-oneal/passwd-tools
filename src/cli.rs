@@ -30,4 +30,18 @@ pub enum Command {
         /// Input file; reads standard input if omitted or `-`.
         file: Option<PathBuf>,
     },
+    /// Print each line with `PREFIX` inserted at its start.
+    Prepend {
+        /// Text to insert at the start of every line.
+        prefix: String,
+        /// Input file; reads standard input if omitted or `-`.
+        file: Option<PathBuf>,
+    },
+    /// Print each line with `SUFFIX` inserted at its end.
+    Append {
+        /// Text to insert at the end of every line.
+        suffix: String,
+        /// Input file; reads standard input if omitted or `-`.
+        file: Option<PathBuf>,
+    },
 }
