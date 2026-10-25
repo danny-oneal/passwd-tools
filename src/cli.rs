@@ -37,4 +37,11 @@ pub enum Command {
         /// Input file; reads standard input if omitted or `-`.
         file: Option<PathBuf>,
     },
+    /// Print each line with `SUFFIX` inserted at its end.
+    Append {
+        /// Text to insert at the end of every line.
+        suffix: String,
+        /// Input file; reads standard input if omitted or `-`.
+        file: Option<PathBuf>,
+    },
 }

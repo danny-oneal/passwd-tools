@@ -4,6 +4,7 @@
 
 pub mod cli;
 pub mod error;
+pub mod append;
 mod line_filter;
 pub mod max_len;
 pub mod min_len;
@@ -37,6 +38,11 @@ pub fn run(cli: Cli) -> Result<()> {
             let input = open_input(file.as_deref())?;
             let output = BufWriter::new(io::stdout().lock());
             prepend::filter(input, output, prefix.as_bytes())
+        }
+        Command::Append { suffix, file } => {
+            let input = open_input(file.as_deref())?;
+            let output = BufWriter::new(io::stdout().lock());
+            append::filter(input, output, suffix.as_bytes())
         }
     }
 }

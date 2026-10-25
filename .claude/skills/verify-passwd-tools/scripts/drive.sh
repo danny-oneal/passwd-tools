@@ -15,7 +15,7 @@ doctor)
   [ -x "$bin" ] || { echo "FAIL: $bin missing; run 'cargo build' in $root"; exit 1; }
   got="$("$bin" --version | awk '{print $2}')"
   [ "$got" = "$want" ] || { echo "FAIL: binary is $got, Cargo.toml says $want; rebuild"; exit 1; }
-  [ "$bin" -nt "$root/src/lib.rs" ] && [ "$bin" -nt "$root/src/min_len.rs" ] && [ "$bin" -nt "$root/src/max_len.rs" ] && [ "$bin" -nt "$root/src/line_filter.rs" ] \
+  [ "$bin" -nt "$root/src/lib.rs" ] && [ "$bin" -nt "$root/src/min_len.rs" ] && [ "$bin" -nt "$root/src/max_len.rs" ] && [ "$bin" -nt "$root/src/line_filter.rs" ] && [ "$bin" -nt "$root/src/prepend.rs" ] && [ "$bin" -nt "$root/src/append.rs" ] \
     || { echo "FAIL: binary older than sources; run 'cargo build'"; exit 1; }
   echo "OK: $bin v$got, evidence dir $ev"
   ;;

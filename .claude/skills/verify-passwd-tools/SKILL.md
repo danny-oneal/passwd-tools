@@ -1,6 +1,6 @@
 ---
 name: verify-passwd-tools
-description: Drive the passwd-tools CLI (min-len and max-len line filters for wordlists) the way a user does and capture proof. Use after any change to src/ or when asked to prove CLI behavior works.
+description: Drive the passwd-tools CLI (min-len and max-len line filters, plus prepend and append line transforms, for wordlists) the way a user does and capture proof. Use after any change to src/ or when asked to prove CLI behavior works.
 ---
 
 # Verify passwd-tools
@@ -21,7 +21,7 @@ Ready means `scripts/drive.sh doctor` prints `OK`. Nothing to tear down: every d
 .claude/skills/verify-passwd-tools/scripts/drive.sh doctor
 ```
 
-Read-only. Fails if the binary is missing, its version differs from `Cargo.toml`, or it is older than `src/lib.rs`, `src/min_len.rs`, `src/max_len.rs` or `src/line_filter.rs`. Run it first whenever results look wrong; rebuild on `FAIL`.
+Read-only. Fails if the binary is missing, its version differs from `Cargo.toml`, or it is older than `src/lib.rs`, `src/min_len.rs`, `src/max_len.rs`, `src/line_filter.rs`, `src/prepend.rs` or `src/append.rs`. Run it first whenever results look wrong; rebuild on `FAIL`.
 
 ## Drive
 
