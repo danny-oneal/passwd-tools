@@ -21,7 +21,7 @@ Ready means `scripts/drive.sh doctor` prints `OK`. Nothing to tear down: every d
 .claude/skills/verify-passwd-tools/scripts/drive.sh doctor
 ```
 
-Read-only. Fails if the binary is missing, its version differs from `Cargo.toml`, or it is older than `src/lib.rs`, `src/min_len.rs` or `src/max_len.rs`. Run it first whenever results look wrong; rebuild on `FAIL`.
+Read-only. Fails if the binary is missing, its version differs from `Cargo.toml`, or it is older than `src/lib.rs`, `src/min_len.rs`, `src/max_len.rs` or `src/line_filter.rs`. Run it first whenever results look wrong; rebuild on `FAIL`.
 
 ## Drive
 

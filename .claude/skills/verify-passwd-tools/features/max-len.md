@@ -37,5 +37,5 @@ Preconditions: same as [min-len.md](./min-len.md): `drive.sh doctor` prints `OK`
 
 ## Gotchas
 
-- `max-len` and `min-len` share `char_len` logic but live in separate files (`src/max_len.rs`, `src/min_len.rs`); a fix in one is not a fix in the other, so run both recipes.
+- `max-len` and `min-len` now share one engine (`char_len` and the line loop in `src/line_filter.rs`); each file (`src/max_len.rs`, `src/min_len.rs`) holds only its own threshold direction. A bug in the shared engine surfaces in both commands, so run both recipes to exercise it from each side.
 - Same shell-quoting traps as `min-len`: use `printf` and `xxd`.

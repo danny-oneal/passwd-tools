@@ -4,6 +4,7 @@
 
 pub mod cli;
 pub mod error;
+mod line_filter;
 pub mod max_len;
 pub mod min_len;
 

@@ -1,6 +1,6 @@
 ---
 name: formal-verify-line-filters
-description: Exhaustively check, over every input up to a stated bound, that passwd-tools' min-len and max-len filters keep exactly the right lines, verbatim and in order. Use after any change to src/min_len.rs, src/max_len.rs, or char_len, or when asked whether the length filters are correct for all inputs.
+description: Exhaustively check, over every input up to a stated bound, that passwd-tools' min-len and max-len filters keep exactly the right lines, verbatim and in order. Use after any change to src/min_len.rs, src/max_len.rs, src/line_filter.rs, or char_len, or when asked whether the length filters are correct for all inputs.
 ---
 
 # Formal check: line-length filters
@@ -40,7 +40,7 @@ Fixing the docs or the code is a product decision; the check is deliberately not
 
 ## Scope: what a pass does and does not cover
 
-- Covered: `min_len::filter`, `max_len::filter`, and `char_len` in both files, for inputs up to 6 bytes over the alphabet above and N up to 7.
+- Covered: `min_len::filter`, `max_len::filter`, and the shared engine (`line_filter::filter` and `char_len`) in `src/line_filter.rs`, for inputs up to 6 bytes over the alphabet above and N up to 7.
 - Not covered: longer inputs, other byte values, `run` and `open_input` in `src/lib.rs`, argument parsing, I/O errors, and the broken-pipe path. A pass says "no bug within this bound", not "no bug".
 - The oracle for the threshold test uses the same length definition as the code (lossy decoding). It proves the comparison, line splitting and copying are right, not that the length definition matches the docs; that is the fourth test's job.
 
@@ -59,11 +59,13 @@ Each of these edits to the real code was made, run, and reverted; each was caugh
 | --- | --- |
 | `min_len.rs`: `>=` to `>` | threshold, partition |
 | `max_len.rs`: `<=` to `<` | threshold, partition |
-| `min_len.rs`: write the line without its `\n` | all three |
-| `max_len.rs`: strip `\r\n` instead of `\n` | threshold, partition |
+| `line_filter.rs`: write the line without its `\n` | all three |
+| `line_filter.rs`: strip `\r\n` instead of `\n` | threshold |
+
+The comparison lives in each command's wrapper (`min_len.rs`, `max_len.rs`); the line loop and `char_len` live once in the shared engine (`line_filter.rs`). A length bug in the shared engine is symmetric across both filters, so `partition` (which only catches min and max disagreeing) no longer fires for it; the independent-oracle `threshold` test still does.
 
 ## Coverage record and sync
 
-- Covers: `src/min_len.rs`, `src/max_len.rs`.
-- Last confirmed against: SHA-256 of `cat src/min_len.rs src/max_len.rs` = `7ae33bbc385b8582c6dacc6eb80b49b7799f338b93a72551b61709e33ab6b442`. This repo has no commits, so a content hash stands in for a commit.
-- To check: `cat src/min_len.rs src/max_len.rs | sha256sum`. If it differs, the covered code changed after the last confirmation; re-run the check, re-read the properties against the new code, and only then replace the hash above (or the commit, once the repo has history).
+- Covers: `src/min_len.rs`, `src/max_len.rs`, `src/line_filter.rs`.
+- Last confirmed against: SHA-256 of `cat src/min_len.rs src/max_len.rs src/line_filter.rs` = `73c2247f02b0ca9d1675272d1bd0f7028e15f823d4c017f3daae8c93575cec7b`. This repo has no commits on the working branch, so a content hash stands in for a commit.
+- To check: `cat src/min_len.rs src/max_len.rs src/line_filter.rs | sha256sum`. If it differs, the covered code changed after the last confirmation; re-run the check, re-read the properties against the new code, and only then replace the hash above (or the commit, once the repo has history).

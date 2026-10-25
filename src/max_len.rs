@@ -3,6 +3,7 @@
 use std::io::{BufRead, Write};
 
 use crate::error::Result;
+use crate::line_filter;
 
 /// Copy lines from `input` to `output` whose length is at most `max_len`
 /// characters.
@@ -14,27 +15,8 @@ use crate::error::Result;
 /// # Errors
 ///
 /// Returns an error if reading from `input` or writing to `output` fails.
-pub fn filter<R: BufRead, W: Write>(mut input: R, mut output: W, max_len: usize) -> Result<()> {
-    let mut buf = Vec::new();
-    loop {
-        buf.clear();
-        if input.read_until(b'\n', &mut buf)? == 0 {
-            break;
-        }
-        let content = buf.strip_suffix(b"\n").unwrap_or(&buf);
-        if char_len(content) <= max_len {
-            output.write_all(&buf)?;
-        }
-    }
-    output.flush()?;
-    Ok(())
-}
-
-fn char_len(bytes: &[u8]) -> usize {
-    match std::str::from_utf8(bytes) {
-        Ok(s) => s.chars().count(),
-        Err(_) => String::from_utf8_lossy(bytes).chars().count(),
-    }
+pub fn filter<R: BufRead, W: Write>(input: R, output: W, max_len: usize) -> Result<()> {
+    line_filter::filter(input, output, |len| len <= max_len)
 }
 
 #[cfg(test)]
